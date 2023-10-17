@@ -6,8 +6,14 @@ export default class ProductManager {
         this.path = path;
     }
 
-    async getNextID(list) {
-        return list.length > 0 ? list[list.length - 1].id + 1 : 1;
+    async getNextID(list = undefined) {
+        if(list){
+            return list.length > 0 ? list[list.length - 1].id + 1 : 1;
+        }else{
+            const list = await this.read();
+            return list.length > 0 ? list[list.length - 1].id + 1 : 1;
+        }
+        
     }
 
     async read() {
@@ -31,48 +37,58 @@ export default class ProductManager {
     async addProduct(obj) {
         const list = await this.read();
 
-        
+        //validar que te lleguen todos los parámetros esperados en addProducts
         if (!obj.title || !obj.description || !obj.price || !obj.thumbnail || !obj.code || obj.stock === undefined) {
             throw new Error('Faltan parámetros en el objeto del producto');
         }
-
+        
+        //que no se repita un code
         if (list.some(product => product.code === obj.code)) {
             throw new Error('El código del producto ya existe');
         }
 
         const nextID = await this.getNextID(list);
+
         obj.id = nextID;
+
         list.push(obj);
-        await this.write(list);
+
+        if(list.length > 0){
+            await this.write(list);
+            console.log(`Producto ${obj.title} Agregado con Exito`)
+        }
+        
         return obj;
     }
 
     async updateProduct(id, updatedProduct) {
         const list = await this.read();
         const index = list.findIndex(product => product.id === id);
-
+        
         if (index !== -1) {
-            
-            const allowedProps = ['title', 'description', 'price', 'thumbnail', 'code', 'stock'];
+            //validar que lleguen solo props del producto
+            const allowedProps = ['id', 'title', 'description', 'price', 'thumbnail', 'code', 'stock'];
             const updatedProps = Object.keys(updatedProduct);
-
-  
             const invalidProps = updatedProps.filter(prop => !allowedProps.includes(prop));
 
             if (invalidProps.length > 0) {
-                throw new Error('Propiedades no válidas en el objeto de producto');
+                throw new Error(`Propiedades no válidas en el objeto de producto`);
             }
 
-     
+            
+            //que no se pueda repetir el ID ni poner un CODE que ya exista
             const existingProductWithCode = list.find(product => product.code === updatedProduct.code && product.id !== id);
-
+       
             if (existingProductWithCode) {
                 throw new Error('El código del producto ya existe');
             }
-
+            updatedProduct.id = id
             list[index] = { ...list[index], ...updatedProduct };
 
-            await this.write(list);
+            if (list.length > 0) { 
+                await this.write(list);
+                console.log(`Producto ${updatedProduct.title} Actualizado con Éxito`);
+            }
         } else {
             throw new Error('Producto no encontrado');
         }
@@ -82,8 +98,10 @@ export default class ProductManager {
         const list = await this.read();
         const index = list.findIndex(product => product.id === id);
         if (index !== -1) {
+            const prod = list[index]
             list.splice(index, 1);
             await this.write(list);
+            console.log(`Producto ${prod.title} Eliminado con Éxito`);
         } else {
             throw new Error('Producto no encontrado');
         }
@@ -100,5 +118,3 @@ export default class ProductManager {
         }
     }
 }
-
-

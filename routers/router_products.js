@@ -2,43 +2,63 @@ import {Router} from 'express'
 import ProductManager from '../utils/productManager.js'
 
 const router = Router()
-const products = new ProductManager('../data/productos.json')
+const productManager = new ProductManager('./data/productos.json')
 
-router.get('/', (req, res) => {
-    res.json(products)
-})
+router.get('/', async (req, res) => {
+    try {
+      const products = await productManager.getProducts();
+      console.log(products);
+      res.json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred while fetching products.' });
+    }
+  });
 
-router.get('/:pid', (req, res) => {
-    const id = req.params.pid
+router.get('/:pid', async (req, res) => {
+    try {
+        const id = req.params.pid
+        const product = await productManager.getProductById(id);
+        console.log(product);
+        res.json(product);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while fetching product.' });
+      }
     res.json(products[id])
 })
 
-router.post('/', (req, res) => {
+router.post('/', async  (req, res) => {
+    try {
     const prod = req.body
-    products.addProduct(prod.title, prod.description, prod.price,prod.thumbnail,prod.code,prod.stock)
-    res.send({status: "aproveed", message:"Product added succesfuly!"})
+    await products.addProduct(prod)
+    res.send({status: "aproveed", message:"Product added succesfuly!"})}
+    catch (error){
+        res.status(500).json({ error: 'An error occurred while adding product.' });
+    }
 })
 
-router.put('/', (req,resp)=>{
+router.put('/', async (req,resp)=>{
     const prod = req.body
+    const products = await productManager.getProducts();
     const idx = products.findIndex(u => u.title.toLowerCase() == prod.title.toLowerCase())
     if (idx <0){
         return resp.status(404).json({status: "Error", error: "User not found"})
     }
-    products[idx]= prod 
+    await updateProduct(idx,  prod ) 
     resp.send({status:'success', message:'Usuario modificado!'})
 })
 
 
-router.delete('/:pid', (req,resp)=>{
-    const id = req.params.pid
-    
-    const length = products.length
-    products = products.filter(u => u.id != id)
-    if(length == products.length){
-        return resp.send({status: "Error", error: "User not found"})
+router.delete('/:pid', async (req,resp)=>{
+    try{
+        const id = req.params.pid
+        await deleteProduct(id)
+        resp.send({status:'success', message:'Usuario eliminado con exito!'})
+    }catch{
+        resp.status(500).json({ error: 'An error occurred while deleting product.' });
     }
-    resp.send({status:'success', message:'Usuario eliminado con exito!'})
+    
 })
 
 export default router
