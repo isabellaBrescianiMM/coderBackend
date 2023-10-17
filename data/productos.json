@@ -1,0 +1,92 @@
+[
+  {
+    "title": "MANTECA CORPORAL DE MANGO 200 ML",
+    "description": "Manteca Corporal",
+    "price": 8.99,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "BNT-40809",
+    "stock": 10,
+    "id": 1
+  },
+  {
+    "title": "CEPILLO DESENREDANTE THE ULTIMATE WET DETANGLER MILLENIAL PINK",
+    "description": "Cepillo para Cabello",
+    "price": 15.99,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "HC-37623",
+    "stock": 20,
+    "id": 2
+  },
+  {
+    "title": "GLITTER PALLETTE POP THAT GLITZ",
+    "description": "Paleta de Sombras de Ojos",
+    "price": 24.69,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "KY-02553",
+    "stock": 22,
+    "id": 3
+  },
+  {
+    "title": "Delineador",
+    "description": "Ojos",
+    "price": 28,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00445",
+    "stock": 40,
+    "id": 4
+  },
+  {
+    "title": "Delineador",
+    "description": "Ojos",
+    "price": 28,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448",
+    "stock": 40,
+    "id": 5
+  },
+  {
+    "title": "PINTA  LABIOS ROJO",
+    "description": "Labios",
+    "price": 30,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448-43s",
+    "stock": 40,
+    "id": 6
+  },
+  {
+    "title": "PINTA  LABIOS ROJO",
+    "description": "Labios",
+    "price": 30,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448-3",
+    "stock": 40,
+    "id": 7
+  },
+  {
+    "title": "PINTA  LABIOS ROJO",
+    "description": "Labios",
+    "price": 30,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448-4",
+    "stock": 40,
+    "id": 8
+  },
+  {
+    "title": "PINTA  LABIOS ROJO",
+    "description": "Labios",
+    "price": 30,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448-5",
+    "stock": 40,
+    "id": 9
+  },
+  {
+    "title": "PINTA  LABIOS ROJO",
+    "description": "Labios",
+    "price": 30,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448-6",
+    "stock": 40,
+    "id": 10
+  }
+]
