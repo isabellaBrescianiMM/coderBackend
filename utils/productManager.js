@@ -21,7 +21,7 @@ export default class ProductManager {
             const data = await fs.promises.readFile(this.path, 'utf-8');
             return JSON.parse(data);
         } else {
-            return [];
+            throw new Error('file does not exist: ' + this.path);
         }
     }
 
@@ -96,7 +96,7 @@ export default class ProductManager {
 
     async deleteProduct(id) {
         const list = await this.read();
-        const index = list.findIndex(product => product.id === id);
+        const index = list.findIndex(product => product.id == id);
         if (index !== -1) {
             const prod = list[index]
             list.splice(index, 1);
