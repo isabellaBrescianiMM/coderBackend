@@ -2,11 +2,11 @@
 
 export default class CartManager{
     constructor (){
-        this.cart = []
+        this.carts = []
     }
-    getElementById = (id)=>{
+    async getElementById(id){
         let elem
-        this.cart.forEach(element => {
+        this.carts.forEach(element => {
             if(element.id == id){
                 elem = element
             }else{
@@ -16,13 +16,15 @@ export default class CartManager{
         return elem
     }
 
-    getCarts = () => {return this.cart}
-    getNextID = () =>{
-        const count = this.cart.length
-        return (count>0) ? this.cart[count-1].id + 1 : 1
+    async getCarts (){
+        return this.carts
     }
-    addCart = (prod) => {
-        const count = this.cart.length
+    async getNextID(){
+        const count = this.carts.length
+        return (count>0) ? this.carts[count-1].id + 1 : 1
+    }
+    async addCart(prod){
+        const count = this.carts.length
         let sigue =0;
         if(count>0) {
             this.products.forEach(element => {
@@ -38,7 +40,7 @@ export default class CartManager{
                         products
                     }
     
-                    this.cart.push(cart_single);
+                    this.carts.push(cart_single);
             }
             if(sigue==1){
                 const id = this.getNextID();
@@ -46,7 +48,7 @@ export default class CartManager{
                         id,
                         products
                     }
-                    this.cart.push(cart_single);
+                    this.carts.push(cart_single);
             }
         }   
     }
