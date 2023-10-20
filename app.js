@@ -33,7 +33,7 @@ app.get('/',  (req, res)  => {
 })
 
 app.use('/api/products', prodRouter)
-app.use('/api/carts', cartRouter)
+app.use('/api/carts', cartRouter )
 
 app.listen(PORT, ()=>{
     console.log('El servidor esta corriendo')

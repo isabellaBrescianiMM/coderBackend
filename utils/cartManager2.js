@@ -37,12 +37,14 @@ export default class CartManager2 {
     async addCart() {
         try{
             const carts = await this.getCarts()
+            let nextLink = await this.getNextID()
             const new_cart = {
-                id: this.getNextID(carts),
+                id: nextLink,
                 products: []
             }
             carts.push(new_cart)
             await this.write(carts)
+            return new_cart
         }catch{
             throw new Error('Problema agregando carrito!')
         }
@@ -59,14 +61,11 @@ export default class CartManager2 {
     }
 
    
-    async addProduct(cart_id, obj, getProductById) {
+    async addProduct(cart_id, prod_id) {
         try{
             const list = await this.read();
 
-            //validar que te lleguen todos los parámetros esperados en addProducts
-            if (!obj.id || !obj.quantity) {
-                throw new Error('Faltan parámetros en el objeto del producto');
-            }
+         
             // Find the index of the product with the matching "id."
             const  cart_index = list.findIndex( cart => cart.id == cart_id);
 
@@ -74,87 +73,41 @@ export default class CartManager2 {
 
             if (cart_index !== -1) {
  
-                //que el produto exista en la base
-                getProductById(obj.id)
-
-                const existingProductIndex = list[cart_index].products.findIndex(product => product.id == obj.id);
+             
+                const existingProductIndex = list[cart_index].products.findIndex(product => product.id == prod_id);
                
                 if (existingProductIndex !== -1) {
                     // Si el producto ya está en el carrito, aumenta la cantidad.
-                    list[cart_index].products[existingProductIndex].quantity += obj.quantity;
+                    list[cart_index].products[existingProductIndex].quantity += 1;
                     console.log("Cantidad actualizada en el carrito.");
                   } else {
                     // Si el producto no está en el carrito, la agrega.
                     const newProd = {
-                        "id": obj.id,
-                        "quantity": obj.quantity
+                        "id": prod_id,
+                        "quantity": 1
                     }
 
                     list[cart_index].products.push(newProd)
-
+                   
                     console.log("Product added successfully.");
             }
             } else {
                 console.log("Cart not found.");
             }
-
+     
              // Escribe los cambios en el JSON
-            if(list[cart_index].products > 0){
+            if(list[cart_index].products.length > 0){
                 await this.write(list);
-                console.log(`Producto ${obj.id} Agregado con Exito`)
+                console.log(`Producto ${prod_id} Agregado con Exito`)
             }
 
         }catch{
-            console.log(`Producto ${obj.id} no se pudo agregar al carrito ${cart_id}`)
+            console.log(`Producto ${prod_id} no se pudo agregar al carrito ${cart_id}`)
         }
     
     }
 
-    async updateProduct(id, updatedProduct) {
-        const list = await this.read();
-        const index = list.findIndex(product => product.id === id);
-        
-        if (index !== -1) {
-            //validar que lleguen solo props del producto
-            const allowedProps = ['id', 'title', 'description', 'price', 'thumbnail', 'code', 'stock'];
-            const updatedProps = Object.keys(updatedProduct);
-            const invalidProps = updatedProps.filter(prop => !allowedProps.includes(prop));
 
-            if (invalidProps.length > 0) {
-                throw new Error(`Propiedades no válidas en el objeto de producto`);
-            }
-
-            
-            //que no se pueda repetir el ID ni poner un CODE que ya exista
-            const existingProductWithCode = list.find(product => product.code === updatedProduct.code && product.id !== id);
-       
-            if (existingProductWithCode) {
-                throw new Error('El código del producto ya existe');
-            }
-            updatedProduct.id = id
-            list[index] = { ...list[index], ...updatedProduct };
-
-            if (list.length > 0) { 
-                await this.write(list);
-                console.log(`Producto ${updatedProduct.title} Actualizado con Éxito`);
-            }
-        } else {
-            throw new Error('Producto no encontrado');
-        }
-    }
-
-    async deleteProduct(id) {
-        const list = await this.read();
-        const index = list.findIndex(product => product.id == id);
-        if (index !== -1) {
-            const prod = list[index]
-            list.splice(index, 1);
-            await this.write(list);
-            console.log(`Producto ${prod.title} Eliminado con Éxito`);
-        } else {
-            throw new Error('Producto no encontrado');
-        }
-    }
 
     
 }
