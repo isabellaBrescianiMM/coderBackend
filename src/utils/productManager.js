@@ -35,10 +35,26 @@ export default class ProductManager {
     }
 
     async addProduct(obj) {
+         /*La ruta raíz POST / deberá agregar un nuevo producto 
+         id:autogenerado 
+         title:String,
+- description:String
+- code:String
+- price:Number
+- status:Boolean Status es true por defecto
+- stock:Number
+- category:String
+- thumbnails:Array de Strings
+que contenga las rutas
+donde están almacenadas
+las imágenes referentes a
+dicho producto */
+
         const list = await this.read();
 
         //validar que te lleguen todos los parámetros esperados en addProducts
-        if (!obj.title || !obj.description || !obj.price || !obj.thumbnail || !obj.code || obj.stock === undefined) {
+        //Todos los campos son obligatorios, a excepción de thumbnails
+        if (!obj.title || !obj.description  || !obj.category  || !obj.price || !obj.code || obj.status == true || obj.stock === undefined) {
             throw new Error('Faltan parámetros en el objeto del producto');
         }
         
@@ -63,11 +79,11 @@ export default class ProductManager {
 
     async updateProduct(id, updatedProduct) {
         const list = await this.read();
-        const index = list.findIndex(product => product.id === id);
+        const index = list.findIndex(product => product.id == id);
         
         if (index !== -1) {
             //validar que lleguen solo props del producto
-            const allowedProps = ['id', 'title', 'description', 'price', 'thumbnail', 'code', 'stock'];
+            const allowedProps = ['id', 'title', 'description', 'price','category','status', 'thumbnail', 'code', 'stock'];
             const updatedProps = Object.keys(updatedProduct);
             const invalidProps = updatedProps.filter(prop => !allowedProps.includes(prop));
 
@@ -82,7 +98,7 @@ export default class ProductManager {
             if (existingProductWithCode) {
                 throw new Error('El código del producto ya existe');
             }
-            updatedProduct.id = id
+            updatedProduct.id =  parseInt(id)
             list[index] = { ...list[index], ...updatedProduct };
 
             if (list.length > 0) { 

@@ -67,17 +67,32 @@
     "description": "Labios",
     "price": 30,
     "thumbnail": "labial-rojo.jpg",
-    "code": "MY-00448-4",
+    "code": "MY-00448-22",
     "stock": 40,
-    "id": 8
+    "id": 8,
+    "category": "labiales",
+    "status": false
   },
   {
     "title": "PINTA  LABIOS ROJO",
     "description": "Labios",
     "price": 30,
     "thumbnail": "labial-rojo.jpg",
-    "code": "MY-00448-5",
+    "code": "MY-00448-21",
     "stock": 40,
-    "id": 9
+    "id": 9,
+    "category": "labiales",
+    "status": false
+  },
+  {
+    "title": "PINTA  LABIOS ROJO",
+    "description": "Labios",
+    "price": 30,
+    "thumbnail": "labial-rojo.jpg",
+    "code": "MY-00448-11",
+    "stock": 40,
+    "category": "labiales",
+    "status": false,
+    "id": 10
   }
 ]
