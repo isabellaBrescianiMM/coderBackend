@@ -1,7 +1,6 @@
 import express from 'express'
-import multer from 'multer'
-import prodRouter from './routers/router_products.js'
-import cartRouter from './routers/router_carts.js'
+import prodRouter from '../routers/router_products.js'
+import cartRouter from '../routers/router_carts.js'
 const PORT = 8080
 
 const app = express()
